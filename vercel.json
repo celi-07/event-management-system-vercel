@@ -1,9 +1,8 @@
 {
   "version": 2,
-  "public": true,
   "functions": {
     "api/index.php": {
-      "runtime": "vercel-php@0.6.2" 
+      "runtime": "vercel-php@0.7.4"
     }
   },
   "routes": [
@@ -12,13 +11,27 @@
       "dest": "/public/build/$1"
     },
     {
+      "src": "/(.*\\.(?:css|js|map|ico|gif|png|jpg|jpeg|svg|webp|woff|woff2))",
+      "dest": "/public/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/api/index.php"
     }
   ],
   "env": {
     "APP_ENV": "production",
-    "APP_DEBUG": "false",
-    "VIEW_COMPILED_PATH": "/tmp/storage/framework/views"
+    "APP_DEBUG": "true",
+    "APP_URL": "https://event-management-system-vercel.vercel.app",
+    "APP_KEY": "base64:qfCYzmQSPS740aqOzLD/tagzD5LfBYIXDiM9S2nge9Q=",
+    "APP_CONFIG_CACHE": "/tmp/config.php",
+    "APP_EVENTS_CACHE": "/tmp/events.php",
+    "APP_PACKAGES_CACHE": "/tmp/packages.php",
+    "APP_ROUTES_CACHE": "/tmp/routes.php",
+    "APP_SERVICES_CACHE": "/tmp/services.php",
+    "VIEW_COMPILED_PATH": "/tmp/views",
+    "CACHE_DRIVER": "array",
+    "LOG_CHANNEL": "stderr",
+    "SESSION_DRIVER": "cookie"
   }
 }

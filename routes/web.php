@@ -7,6 +7,17 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvitationController;
+use Illuminate\Support\Facades\Artisan;
+
+// !!! WARNING: DELETE THIS ROUTE IMMEDIATELY AFTER RUNNING !!!
+Route::get('/migrate-db', function () {
+    Artisan::call('migrate:fresh', [
+        '--seed' => true, 
+        '--force' => true
+    ]); 
+    
+    return "Database command executed successfully: 'migrate:fresh --seed'";
+});
 
 Route::controller(EventController::class)->group(function () {
     Route::get('/discover', 'discover')->name('discover');
