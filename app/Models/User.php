@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'password',
         'profile_image',
+        'imagekit_file_id',
         'is_organizer',
     ];
 

@@ -50,7 +50,7 @@
                     <div class="flex items-center space-x-6">
                         <div class="shrink-0">
                             <img class="h-24 w-24 object-cover rounded-full ring-2 ring-gray-300" 
-                                src="{{ Auth::user()->profile_image ? asset(Auth::user()->profile_image) : asset('images/account.png') }}" 
+                                src="{{ Auth::user()->profile_image ?: asset('images/account.png') }}" 
                                 alt="Profile picture">
                         </div>
                         <div class="flex-1">

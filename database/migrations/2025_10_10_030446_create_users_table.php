@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('is_organizer')->default(false);
             $table->string('profile_image')->nullable();
+            $table->string('imagekit_file_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

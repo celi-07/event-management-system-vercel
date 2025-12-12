@@ -59,7 +59,7 @@
 
         <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
             @if($event->image)
-                <img src="{{ asset($event->image) }}" alt="{{ $event->name }}" class="w-full h-64 object-cover">
+                <img src="{{ $event->image }}" alt="{{ $event->name }}" class="w-full h-64 object-cover">
             @else
                 <div class="w-full h-64 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
                     <span class="text-white text-4xl font-bold">{{ substr($event->name, 0, 1) }}</span>

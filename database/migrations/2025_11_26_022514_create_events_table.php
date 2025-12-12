@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('host_id')->constrained('users')->onDelete('cascade');
             $table->string('location');
             $table->string('image')->nullable();
+            $table->string('imagekit_file_id')->nullable();
             $table->longText('description')->nullable();
             $table->timestamps();
         });

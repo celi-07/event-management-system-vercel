@@ -83,7 +83,7 @@
                     <div class="form-input">
                         <label for="title">Event Title <span class="text-danger">*</span></label>
                         <input type="text"
-                            class="form-control @error('title') is-invalid @enderror" 
+                            class="@error('title') border-red-500 @enderror" 
                             id="title"
                             name="title"
                             value="{{ old('title', $event->title) }}"
@@ -91,28 +91,28 @@
                             {{ $isPublished ? 'disabled' : '' }}
                             required>
                         @error('title')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-input">
                         <label for="date">Event Date <span class="text-danger">*</span></label>
                         <input type="date"
-                            class="form-control @error('date') is-invalid @enderror"
+                            class="@error('date') border-red-500 @enderror"
                             id="date"
                             name="date"
                             value="{{ old('date', $event->date) }}"
                             {{ $isPublished ? 'disabled' : '' }}
                             required>
                         @error('date')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-input">
                         <label for="location">Location <span class="text-danger">*</span></label>
                         <input type="text"
-                            class="form-control @error('location') is-invalid @enderror"
+                            class="@error('location') border-red-500 @enderror"
                             id="location"
                             name="location"
                             value="{{ old('location', $event->location) }}"
@@ -120,7 +120,7 @@
                             {{ $isPublished ? 'disabled' : '' }}
                             required>
                         @error('location')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
@@ -130,7 +130,7 @@
                             id="image"
                             name="image"
                             accept="image/*"
-                            class="noglobal @error('image') is-invalid @enderror block w-full text-[14px] rounded-md mt-[8px] mb-[2px]
+                            class="noglobal @error('image') border-red-500 @enderror block w-full text-[14px] rounded-md mt-[8px] mb-[2px]
                             file:mr-4 file:py-2 file:px-4
                             file:rounded-md file:border-0
                             file:text-[12px] file:font-semibold
@@ -140,17 +140,17 @@
                         <small class="text-sm fw-300 mt-2">Supported formats: JPG, PNG, GIF (Max 2MB)</small>
                         @if($event->image)
                             <div class="mt-2">
-                                <img src="{{ asset($event->image) }}" alt="Current image" style="max-height:120px;" class="rounded shadow-sm">
+                                <img src="{{ $event->image }}" alt="Current image" style="max-height:120px;" class="rounded shadow-sm">
                             </div>
                         @endif
                         @error('image')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-input">
                         <label for="description">Description <span class="text-danger">*</span></label>
-                        <textarea class="@error('description') is-invalid @enderror
+                        <textarea class="@error('description') border-red-500 @enderror
                                 {{ $isPublished ? 'bg-[#ebecef] text-black' : '' }}"
                                 id="description"
                                 name="description"
@@ -159,7 +159,7 @@
                                 {{ $isPublished ? 'disabled' : '' }}
                                 required>{{ old('description', $event->description) }}</textarea>
                         @error('description')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 

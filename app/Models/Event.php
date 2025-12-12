@@ -17,6 +17,7 @@ class Event extends Model
         'location',
         'description',
         'image',
+        'imagekit_file_id',
         'status',
     ];
 

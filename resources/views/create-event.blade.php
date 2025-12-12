@@ -82,48 +82,48 @@
                     <div class="form-input">
                         <label for="title">Event Title <span class="text-danger">*</span></label>
                         <input type="text" 
-                                class="@error('title') is-invalid @enderror" 
+                                class="@error('title') border-red-500 @enderror" 
                                 id="title" 
                                 name="title" 
                                 placeholder="Enter event title"
                                 value="{{ old('title') }}"
                                 required>
                         @error('title')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-input">
                         <label for="date">Event Date <span class="text-danger">*</span></label>
                         <input type="date" 
-                                class="@error('date') is-invalid @enderror" 
+                                class="@error('date') border-red-500 @enderror" 
                                 id="date" 
                                 name="date"
                                 value="{{ old('date') }}"
                                 required>
                         @error('date')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-input">
                         <label for="location">Location <span class="text-danger">*</span></label>
                         <input type="text" 
-                                class="@error('location') is-invalid @enderror" 
+                                class="@error('location') border-red-500 @enderror" 
                                 id="location" 
                                 name="location" 
                                 placeholder="Enter event location"
                                 value="{{ old('location') }}"
                                 required>
                         @error('location')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-input">
                         <label for="image">Event Image</label>
                         <input type="file" id="image" name="image" accept="image/*"
-                                class="noglobal @error('image') is-invalid @enderror block w-full text-[14px] text-[#000]
+                                class="noglobal @error('image') border-red-500 @enderror block w-full text-[14px] text-[#000]
                                 bg-gray-200 rounded-md mt-[8px] mb-[2px]
                                 file:mr-4 file:py-2 file:px-4
                                 file:rounded-md file:border-0
@@ -132,20 +132,20 @@
                                 hover:file:bg-indigo-50 hover:file:text-[#000] cursor-pointer">
                         <span class="text-sm fw-300 mt-2">Supported formats: JPG, PNG, GIF (Max 2MB)</span>
                         @error('image')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-input">
                         <label for="description">Description <span class="text-danger">*</span></label>
-                        <textarea class="@error('description') is-invalid @enderror" 
+                        <textarea class="@error('description') border-red-500 @enderror" 
                                     id="description" 
                                     name="description" 
                                     rows="6" 
                                     placeholder="Describe your event..."
                                     required>{{ old('description') }}</textarea>
                         @error('description')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                         @enderror
                     </div>
 

@@ -47,12 +47,38 @@ class EventController extends Controller
         try {
             $status = $request->input('action') === 'draft' ? 'Draft' : 'Published';
             $imagePath = null;
+            $imagekitFileId = null;
 
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $imageName = time() . '_' . auth()->id() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('uploads/events'), $imageName);
-                $imagePath = 'uploads/events/' . $imageName;
+                
+                try {
+                    $client = new \GuzzleHttp\Client();
+                    $response = $client->request('POST', 'https://upload.imagekit.io/api/v1/files/upload', [
+                        'auth' => [env('IMAGEKIT_PRIVATE_KEY'), ''],
+                        'multipart' => [
+                            [
+                                'name' => 'file',
+                                'contents' => fopen($image->getRealPath(), 'r'),
+                                'filename' => $image->getClientOriginalName()
+                            ],
+                            [
+                                'name' => 'fileName',
+                                'contents' => 'event_' . time() . '_' . auth()->id() . '.' . $image->getClientOriginalExtension()
+                            ],
+                            [
+                                'name' => 'folder',
+                                'contents' => '/event_images'
+                            ]
+                        ]
+                    ]);
+                    
+                    $result = json_decode($response->getBody(), true);
+                    $imagePath = $result['url'];
+                    $imagekitFileId = $result['fileId'];
+                } catch (\Exception $e) {
+                    return back()->with('error', 'Error uploading image: ' . $e->getMessage())->withInput();
+                }
             }
 
             $event = Event::create([
@@ -61,6 +87,7 @@ class EventController extends Controller
                 'location' => $data['location'],
                 'description' => $data['description'],
                 'image' => $imagePath,
+                'imagekit_file_id' => $imagekitFileId,
                 'host_id' => auth()->id(),
                 'status' => $status,
             ]);
@@ -102,12 +129,49 @@ class EventController extends Controller
 
         try {
             $imagePath = $event->image;
+            $imagekitFileId = $event->imagekit_file_id;
 
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $imageName = time() . '_' . auth()->id() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('uploads/events'), $imageName);
-                $imagePath = 'uploads/events/' . $imageName;
+                
+                if ($event->imagekit_file_id) {
+                    $client = new \GuzzleHttp\Client();
+                    try {
+                        $client->request('DELETE', 'https://api.imagekit.io/v1/files/' . $event->imagekit_file_id, [
+                            'auth' => [env('IMAGEKIT_PRIVATE_KEY'), '']
+                        ]);
+                    } catch (\Exception $e) {
+                        // Continue even if delete fails
+                    }
+                }
+                
+                try {
+                    $client = new \GuzzleHttp\Client();
+                    $response = $client->request('POST', 'https://upload.imagekit.io/api/v1/files/upload', [
+                        'auth' => [env('IMAGEKIT_PRIVATE_KEY'), ''],
+                        'multipart' => [
+                            [
+                                'name' => 'file',
+                                'contents' => fopen($image->getRealPath(), 'r'),
+                                'filename' => $image->getClientOriginalName()
+                            ],
+                            [
+                                'name' => 'fileName',
+                                'contents' => 'event_' . time() . '_' . auth()->id() . '.' . $image->getClientOriginalExtension()
+                            ],
+                            [
+                                'name' => 'folder',
+                                'contents' => '/event_images'
+                            ]
+                        ]
+                    ]);
+                    
+                    $result = json_decode($response->getBody(), true);
+                    $imagePath = $result['url'];
+                    $imagekitFileId = $result['fileId'];
+                } catch (\Exception $e) {
+                    return back()->with('error', 'Error uploading image: ' . $e->getMessage())->withInput();
+                }
             }
 
             $newStatus = $event->status;
@@ -121,6 +185,7 @@ class EventController extends Controller
                 'location' => $data['location'],
                 'description' => $data['description'],
                 'image' => $imagePath,
+                'imagekit_file_id' => $imagekitFileId,
                 'status' => $newStatus,
             ]);
 
@@ -135,6 +200,18 @@ class EventController extends Controller
         $event = Event::findOrFail($id);
 
         try {
+            // Delete image from ImageKit if exists
+            if ($event->imagekit_file_id) {
+                $client = new \GuzzleHttp\Client();
+                try {
+                    $client->request('DELETE', 'https://api.imagekit.io/v1/files/' . $event->imagekit_file_id, [
+                        'auth' => [env('IMAGEKIT_PRIVATE_KEY'), '']
+                    ]);
+                } catch (\Exception $e) {
+                    // Continue even if delete fails
+                }
+            }
+            
             $event->delete();
             return redirect()->route('my.events')->with('success', 'Event deleted successfully!');
         } catch (\Exception $e) {
